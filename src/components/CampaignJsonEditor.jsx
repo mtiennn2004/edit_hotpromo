@@ -274,6 +274,23 @@ const CampaignJsonEditor = () => {
   const [scDialogRows, setScDialogRows] = useState([]);
 
   const fileInputRef = useRef(null);
+  const duplicateMission = (index) => {
+    setMissions(prev => {
+      const target = prev[index];
+
+      // Tạo bản sao sâu (deep clone)
+      const clone = JSON.parse(JSON.stringify(target));
+
+      // Đổi tên mission để tránh trùng
+      clone.name = `${clone.name} (Copy)`;
+
+      return [
+        ...prev.slice(0, index + 1),
+        clone,
+        ...prev.slice(index + 1)
+      ];
+    });
+  };
 
   const handleOpenPreview = () => {
       try {
@@ -930,6 +947,7 @@ const CampaignJsonEditor = () => {
                     <th>NumberCfg</th>
                     <th>RangeCfg</th>
                     <th>StringCfg</th>
+                    <th>Edit Config</th>
                     <th>Actions</th>
                   </tr>
                 </thead>
@@ -1068,13 +1086,21 @@ const CampaignJsonEditor = () => {
                         />
                       </td>
 
-                      {/* Actions */}
+                      {/* Edit Cfg */}
                       <td>
-                        <div className="action-grid">
+                        <div className="action-grid edit-config">
                           <button className="act-btn" onClick={() => openNcDialog(i)}>Edit Number</button>
                           <button className="act-btn" onClick={() => openRcDialog(i)}>Edit Range</button>
                           <button className="act-btn" onClick={() => openScDialog(i)}>Edit String</button>
+
+
+                        </div>
+                      </td>
+                      {/* Actions */}
+                      <td>
+                        <div className="action-grid edit-config">
                           <button className="act-btn delete" onClick={() => deleteMission(i)}>❌ Delete</button>
+                          <button className="btn-duplicate" onClick={() => duplicateMission(i)}>Duplicate</button>
                         </div>
                       </td>
 
