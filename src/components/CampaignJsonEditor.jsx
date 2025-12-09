@@ -241,6 +241,8 @@ const CampaignJsonEditor = () => {
   const [campaign, setCampaign] = useState(null);
   const [missions, setMissions] = useState([]);
   const [exportJson, setExportJson] = useState("");
+  const [dragIndex, setDragIndex] = useState(null);
+
 
   // Dates
   const [acceptStartTime, setAcceptStartTime] = useState(null);
@@ -274,6 +276,29 @@ const CampaignJsonEditor = () => {
   const [scDialogRows, setScDialogRows] = useState([]);
 
   const fileInputRef = useRef(null);
+    // ====== Drag & Drop Missions ======
+  const handleDragStart = (index) => {
+    setDragIndex(index);
+  };
+
+  const handleDragEnter = (index) => {
+      if (dragIndex === null || dragIndex === index) return;
+
+      setMissions((prev) => {
+        const newList = [...prev];
+        const [moved] = newList.splice(dragIndex, 1);
+        newList.splice(index, 0, moved);
+        return newList;
+      });
+
+      // cập nhật lại vị trí đang kéo
+      setDragIndex(index);
+    };
+
+    const handleDragEnd = () => {
+      setDragIndex(null);
+    };
+
   const duplicateMission = (index) => {
     setMissions(prev => {
       const target = prev[index];
@@ -938,6 +963,7 @@ const CampaignJsonEditor = () => {
               <table className="mission-table">
                 <thead>
                   <tr>
+                    <th style={{ width: "40px" }}>↕</th>
                     <th>Mission Name</th>
                     <th>Description</th>
                     <th>Milestone</th>
@@ -954,7 +980,22 @@ const CampaignJsonEditor = () => {
 
                 <tbody>
                   {missions.map((m, i) => (
-                    <tr key={i}>
+                    <tr
+                      key={i}
+                      className={i === dragIndex ? "dragging-row" : ""}
+                    >
+                      {/* Drag handle */}
+                      <td
+                        className="drag-cell"
+                        draggable
+                        onDragStart={() => handleDragStart(i)}
+                        onDragEnter={() => handleDragEnter(i)}
+                        onDragOver={(e) => e.preventDefault()} // cần để onDragEnter hoạt động
+                        onDragEnd={handleDragEnd}
+                      >
+                        <span className="drag-handle">↕</span>
+                      </td>
+
                       {/* Mission Name */}
                       <td>
                         <input
