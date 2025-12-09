@@ -1156,6 +1156,50 @@ const CampaignJsonEditor = () => {
             ⬇️ Export JSON
           </button>
 
+          {/* SIMPLE VIEW LIKE EXCEL */}
+          {missions.length > 0 && (
+            <div className="mission-overview">
+              <div className="mission-overview-title">
+                Mission overview (view only)
+              </div>
+
+              <div className="mission-overview-table-wrapper">
+                <table className="mission-overview-table">
+                  <thead>
+                    <tr>
+                      <th>#</th>
+                      <th>Mission Name</th>
+                      <th>Description</th>
+                      <th>Milestone</th>
+                      <th>Quantity</th>
+                      <th>Reward</th>
+                      <th>Point Type</th>
+                      <th>NumberCfg</th>
+                      <th>RangeCfg</th>
+                      <th>StringCfg</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {missions.map((m, idx) => (
+                      <tr key={idx}>
+                        <td>{idx + 1}</td>
+                        <td>{m.name}</td>
+                        <td>{m.description}</td>
+                        <td>{m.milestone}</td>
+                        <td>{m.quantity}</td>
+                        <td>{m.rewardAmount}</td>
+                        <td>{m.pointType}</td>
+                        <td>{stringifyNumberCfg(m.list_number_cfg)}</td>
+                        <td>{summarizeRangeCfg(m.range_cfg)}</td>
+                        <td>{summarizeStringCfg(m.list_string_cfg)}</td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          )}
+
           {exportJson && (
             <div className="export-area">
               <pre className="export-box">{exportJson}</pre>
