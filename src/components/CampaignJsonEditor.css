@@ -199,53 +199,75 @@ h2 {
   border: 1px solid #ddd;
   border-radius: 6px;
 }
-/* ===== Mission overview (read-only table) ===== */
+/* ===== Mission overview (read-only table, Excel style) ===== */
 
 .mission-overview {
-  margin-top: 16px;
-  padding: 12px 16px;
+  margin-top: 12px;
+  padding: 10px 12px;
   background: #ffffff;
-  border-radius: 8px;
+  border-radius: 6px;
   border: 1px solid var(--aha-border);
 }
 
 .mission-overview-title {
-  font-size: 14px;
+  font-size: 13px;
   font-weight: 600;
-  margin-bottom: 8px;
+  margin-bottom: 6px;
 }
 
 .mission-overview-table-wrapper {
-  max-height: 320px;        /* giống cảm giác xem trong Excel, có scroll */
+  max-height: 340px;
   overflow: auto;
+  border: 1px solid #d9d9d9;
 }
 
+/* bảng giống Excel */
 .mission-overview-table {
   width: 100%;
   border-collapse: collapse;
+  table-layout: fixed;
   font-size: 13px;
 }
 
 .mission-overview-table th,
 .mission-overview-table td {
-  border: 1px solid #e0e0e0;
-  padding: 6px 8px;
-  text-align: left;
+  border: 1px solid #d9d9d9;
+  padding: 4px 6px;
   vertical-align: top;
 }
 
+/* header */
 .mission-overview-table th {
-  background: #f8fafc;
+  background: #f3f6fb;
+  font-weight: 600;
   position: sticky;
   top: 0;
   z-index: 1;
+  white-space: nowrap;
 }
 
+/* zebra row */
+.mission-overview-table tbody tr:nth-child(odd) {
+  background: #ffffff;
+}
+
+.mission-overview-table tbody tr:nth-child(even) {
+  background: #fafafa;
+}
+
+/* căn phải cho số: Milestone, Quantity, Reward */
+.mission-overview-table td:nth-child(4),
+.mission-overview-table td:nth-child(5),
+.mission-overview-table td:nth-child(6) {
+  text-align: right;
+}
+
+/* mô tả & config cho phép xuống dòng */
 .mission-overview-table td:nth-child(3),
 .mission-overview-table td:nth-child(8),
 .mission-overview-table td:nth-child(9),
 .mission-overview-table td:nth-child(10) {
-  white-space: pre-wrap;    /* cho Description & Cfg xuống dòng, không chen chúc */
+  white-space: pre-wrap;
 }
 
 /* =========================================================
