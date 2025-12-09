@@ -199,6 +199,54 @@ h2 {
   border: 1px solid #ddd;
   border-radius: 6px;
 }
+/* ===== Mission overview (read-only table) ===== */
+
+.mission-overview {
+  margin-top: 16px;
+  padding: 12px 16px;
+  background: #ffffff;
+  border-radius: 8px;
+  border: 1px solid var(--aha-border);
+}
+
+.mission-overview-title {
+  font-size: 14px;
+  font-weight: 600;
+  margin-bottom: 8px;
+}
+
+.mission-overview-table-wrapper {
+  max-height: 320px;        /* giống cảm giác xem trong Excel, có scroll */
+  overflow: auto;
+}
+
+.mission-overview-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13px;
+}
+
+.mission-overview-table th,
+.mission-overview-table td {
+  border: 1px solid #e0e0e0;
+  padding: 6px 8px;
+  text-align: left;
+  vertical-align: top;
+}
+
+.mission-overview-table th {
+  background: #f8fafc;
+  position: sticky;
+  top: 0;
+  z-index: 1;
+}
+
+.mission-overview-table td:nth-child(3),
+.mission-overview-table td:nth-child(8),
+.mission-overview-table td:nth-child(9),
+.mission-overview-table td:nth-child(10) {
+  white-space: pre-wrap;    /* cho Description & Cfg xuống dòng, không chen chúc */
+}
 
 /* =========================================================
    DIALOG
