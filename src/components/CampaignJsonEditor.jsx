@@ -1,5 +1,5 @@
 // CampaignJsonEditor.jsx
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import "./CampaignJsonEditor.css";
 import ReactQuill from "react-quill-new";
 import "react-quill-new/dist/quill.snow.css";
@@ -242,6 +242,59 @@ const CampaignJsonEditor = () => {
   const [missions, setMissions] = useState([]);
   const [exportJson, setExportJson] = useState("");
   const [dragIndex, setDragIndex] = useState(null);
+  const hasUnsavedChanges =
+    !!campaign ||
+    missions.length > 0 ||
+    rawInput.trim() !== "";
+    // Cảnh báo khi tắt tab / reload nếu đang có dữ liệu
+
+  const hasUnsavedRef = useRef(false);
+  useEffect(() => {
+    hasUnsavedRef.current = hasUnsavedChanges;
+  }, [hasUnsavedChanges]);
+
+    // Cảnh báo khi tắt tab / reload
+  useEffect(() => {
+    const handleBeforeUnload = (e) => {
+      if (!hasUnsavedChanges) return;
+      e.preventDefault();
+      e.returnValue = "";
+    };
+
+    window.addEventListener("beforeunload", handleBeforeUnload);
+    return () => window.removeEventListener("beforeunload", handleBeforeUnload);
+  }, [hasUnsavedChanges]);
+
+    // Cảnh báo khi nhấn nút Back/Forward của trình duyệt
+  useEffect(() => {
+    // Đẩy 1 state "ảo" vào history để lần bấm Back đầu tiên đi qua đây
+    window.history.replaceState({ editorGuard: true }, "", window.location.href);
+    window.history.pushState({ editorGuard: true }, "", window.location.href);
+
+    const handlePopState = (event) => {
+      // Nếu không phải state của editor hoặc không có dữ liệu thì cho back bình thường
+      if (!event.state || !event.state.editorGuard || !hasUnsavedRef.current) {
+        return;
+      }
+
+      const confirmLeave = window.confirm(
+        "                            Out????? Sure?????\n" +
+          "Are you sure you want to go back to the previous page??"
+      );
+
+      if (!confirmLeave) {
+        // Người dùng chọn ở lại → đẩy lại state để “hủy” thao tác Back
+        window.history.pushState({ editorGuard: true }, "", window.location.href);
+      }
+      // Nếu đồng ý rời trang: không làm gì, browser tiếp tục Back bình thường
+    };
+
+    window.addEventListener("popstate", handlePopState);
+
+    return () => {
+      window.removeEventListener("popstate", handlePopState);
+    };
+  }, []);
 
 
   // Dates
