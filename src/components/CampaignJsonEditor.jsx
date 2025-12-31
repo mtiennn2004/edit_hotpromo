@@ -1089,6 +1089,7 @@ const CampaignJsonEditor = () => {
                               Number(e.target.value)
                             )
                           }
+                          onWheel={(e) => e.target.blur()}
                         />
                       </td>
 
@@ -1105,6 +1106,7 @@ const CampaignJsonEditor = () => {
                               Number(e.target.value)
                             )
                           }
+                          onWheel={(e) => e.target.blur()}
                         />
                       </td>
 
@@ -1121,6 +1123,7 @@ const CampaignJsonEditor = () => {
                               Number(e.target.value)
                             )
                           }
+                          onWheel={(e) => e.target.blur()}
                         />
                       </td>
 
